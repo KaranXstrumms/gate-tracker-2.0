@@ -68,63 +68,105 @@ export default function AddQuestion() {
   };
 
   return (
-    <div className="container" style={{ padding: '2rem 0' }}>
-      <div className="glass-panel" style={{ padding: '2rem', maxWidth: '800px', margin: '0 auto' }}>
-        <h1 style={{ marginBottom: '2rem', fontSize: '1.8rem', background: 'var(--accent-gradient)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-          Add New Question
+    <div style={{ padding: '2rem', maxWidth: '1200px', margin: '0 auto' }}>
+      {/* Header */}
+      <div style={{ marginBottom: '2rem' }}>
+        <div style={{ fontSize: '0.875rem', color: '#9ca3af', marginBottom: '0.5rem' }}>
+          Question Bank › Add New Question
+        </div>
+        <h1 style={{ 
+          fontSize: '1.875rem', 
+          fontWeight: '700', 
+          color: '#f3f4f6'
+        }}>
+          New Question Entry
         </h1>
+      </div>
 
-        {status.message && (
+      {status.message && (
+        <div style={{ 
+          padding: '1rem', 
+          borderRadius: '0.5rem', 
+          marginBottom: '2rem',
+          background: status.type === 'error' ? 'rgba(239, 68, 68, 0.1)' : 'rgba(34, 197, 94, 0.1)',
+          color: status.type === 'error' ? '#fca5a5' : '#86efac',
+          border: `1px solid ${status.type === 'error' ? 'rgba(239, 68, 68, 0.2)' : 'rgba(34, 197, 94, 0.2)'}`,
+          display: 'flex',
+          alignItems: 'center',
+          gap: '0.75rem'
+        }}>
+          <span>{status.type === 'error' ? '⚠️' : '✅'}</span>
+          {status.message}
+        </div>
+      )}
+
+      <form onSubmit={handleSubmit}>
+        {/* Section 1: Question Metadata */}
+        <div style={{ 
+          background: 'rgba(255, 255, 255, 0.03)', 
+          border: '1px solid rgba(255, 255, 255, 0.1)', 
+          borderRadius: '0.75rem',
+          padding: '2rem',
+          marginBottom: '2rem'
+        }}>
           <div style={{ 
-            padding: '1rem', 
-            borderRadius: '0.5rem', 
+            fontSize: '0.875rem', 
+            fontWeight: '600', 
+            color: '#4b8aaf', 
+            textTransform: 'uppercase', 
+            letterSpacing: '0.05em',
             marginBottom: '1.5rem',
-            background: status.type === 'error' ? 'rgba(239, 68, 68, 0.2)' : 'rgba(34, 197, 94, 0.2)',
-            color: status.type === 'error' ? '#fca5a5' : '#86efac',
-            border: `1px solid ${status.type === 'error' ? 'rgba(239, 68, 68, 0.5)' : 'rgba(34, 197, 94, 0.5)'}`
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.5rem'
           }}>
-            {status.message}
+            📁 Question Metadata
           </div>
-        )}
 
-        <form onSubmit={handleSubmit}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.5rem' }}>
             <div className="form-group">
-              <label>Year</label>
-              <input 
-                type="number" 
-                value={formData.year} 
-                onChange={e => setFormData({...formData, year: parseInt(e.target.value)})} 
-              />
-            </div>
-            <div className="form-group">
-              <label>Marks</label>
+              <label style={{ display: 'block', fontSize: '0.75rem', color: '#9ca3af', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                Subject Area
+              </label>
               <select 
-                value={formData.marks} 
-                onChange={e => setFormData({...formData, marks: parseInt(e.target.value)})}
+                value={formData.subjectId} 
+                onChange={handleSubjectChange} 
+                required
+                style={{
+                  width: '100%',
+                  padding: '0.75rem',
+                  background: 'rgba(0, 0, 0, 0.2)',
+                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                  borderRadius: '0.5rem',
+                  color: '#f3f4f6',
+                  fontSize: '0.9375rem'
+                }}
               >
-                <option value={1}>1 Mark</option>
-                <option value={2}>2 Marks</option>
-              </select>
-            </div>
-          </div>
-
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
-            <div className="form-group">
-              <label>Subject</label>
-              <select value={formData.subjectId} onChange={handleSubjectChange} required>
                 <option value="">Select Subject</option>
                 {subjects.map(s => (
                   <option key={s.id} value={s.id}>{s.name}</option>
                 ))}
               </select>
             </div>
+
             <div className="form-group">
-              <label>Topic</label>
+              <label style={{ display: 'block', fontSize: '0.75rem', color: '#9ca3af', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                Specific Topic
+              </label>
               <select 
                 value={formData.topicId} 
                 onChange={e => setFormData({...formData, topicId: e.target.value})}
                 disabled={!formData.subjectId}
+                style={{
+                  width: '100%',
+                  padding: '0.75rem',
+                  background: 'rgba(0, 0, 0, 0.2)',
+                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                  borderRadius: '0.5rem',
+                  color: '#f3f4f6',
+                  fontSize: '0.9375rem',
+                  opacity: !formData.subjectId ? 0.5 : 1
+                }}
               >
                 <option value="">Select Topic</option>
                 {topics.map(t => (
@@ -132,69 +174,282 @@ export default function AddQuestion() {
                 ))}
               </select>
             </div>
-          </div>
 
+            <div className="form-group">
+              <label style={{ display: 'block', fontSize: '0.75rem', color: '#9ca3af', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                Exam Year
+              </label>
+              <input 
+                type="number" 
+                value={formData.year} 
+                onChange={e => setFormData({...formData, year: parseInt(e.target.value)})}
+                style={{
+                  width: '100%',
+                  padding: '0.75rem',
+                  background: 'rgba(0, 0, 0, 0.2)',
+                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                  borderRadius: '0.5rem',
+                  color: '#f3f4f6',
+                  fontSize: '0.9375rem'
+                }}
+              />
+            </div>
+
+            <div className="form-group">
+              <label style={{ display: 'block', fontSize: '0.75rem', color: '#9ca3af', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                Difficulty / Marks
+              </label>
+              <div style={{ display: 'flex', gap: '0.5rem' }}>
+                {[1, 2].map(mark => (
+                  <button
+                    key={mark}
+                    type="button"
+                    onClick={() => setFormData({...formData, marks: mark})}
+                    style={{
+                      flex: 1,
+                      padding: '0.75rem',
+                      background: formData.marks === mark ? 'rgba(75, 138, 175, 0.2)' : 'rgba(0, 0, 0, 0.2)',
+                      border: `1px solid ${formData.marks === mark ? '#4b8aaf' : 'rgba(255, 255, 255, 0.1)'}`,
+                      borderRadius: '0.5rem',
+                      color: formData.marks === mark ? '#4b8aaf' : '#9ca3af',
+                      cursor: 'pointer',
+                      fontSize: '0.875rem',
+                      fontWeight: '600'
+                    }}
+                  >
+                    {mark} Mark{mark > 1 ? 's' : ''}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Section 2: Problem Statement */}
+        <div style={{ 
+          background: 'rgba(255, 255, 255, 0.03)', 
+          border: '1px solid rgba(255, 255, 255, 0.1)', 
+          borderRadius: '0.75rem',
+          padding: '2rem',
+          marginBottom: '2rem'
+        }}>
+          <div style={{ 
+            fontSize: '0.875rem', 
+            fontWeight: '600', 
+            color: '#4b8aaf', 
+            textTransform: 'uppercase', 
+            letterSpacing: '0.05em',
+            marginBottom: '1.5rem',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.5rem'
+          }}>
+            📄 Problem Statement
+          </div>
+          
           <div className="form-group">
-            <label>Question Text (Markdown supported)</label>
             <textarea 
-              rows={4}
+              rows={6}
               value={formData.questionText}
               onChange={e => setFormData({...formData, questionText: e.target.value})}
               required
-              placeholder="Enter the question here..."
+              placeholder="Enter question text here... Support for Markdown enabled."
+              style={{
+                width: '100%',
+                padding: '1rem',
+                background: 'rgba(0, 0, 0, 0.2)',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+                borderRadius: '0.5rem',
+                color: '#f3f4f6',
+                fontSize: '1rem',
+                lineHeight: '1.6',
+                resize: 'vertical',
+                fontFamily: 'monospace'
+              }}
             />
+            <div style={{ textAlign: 'right', marginTop: '0.5rem', fontSize: '0.75rem', color: '#6b7280' }}>
+              Markdown Supported
+            </div>
+          </div>
+        </div>
+
+        {/* Section 3: Multiple Choice Options */}
+        <div style={{ 
+          background: 'rgba(255, 255, 255, 0.03)', 
+          border: '1px solid rgba(255, 255, 255, 0.1)', 
+          borderRadius: '0.75rem',
+          padding: '2rem',
+          marginBottom: '2rem'
+        }}>
+          <div style={{ 
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            marginBottom: '1.5rem'
+          }}>
+            <div style={{ 
+              fontSize: '0.875rem', 
+              fontWeight: '600', 
+              color: '#4b8aaf', 
+              textTransform: 'uppercase', 
+              letterSpacing: '0.05em',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.5rem'
+            }}>
+              ✅ Multiple Choice Options
+            </div>
+            <div style={{ 
+              fontSize: '0.75rem', 
+              color: '#4b8aaf', 
+              background: 'rgba(75, 138, 175, 0.1)',
+              padding: '0.25rem 0.75rem',
+              borderRadius: '9999px',
+              fontWeight: '600'
+            }}>
+              Single Correct Answer
+            </div>
           </div>
 
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
             {['A', 'B', 'C', 'D'].map(opt => (
-              <div key={opt} className="form-group">
-                <label>Option {opt}</label>
-                <textarea 
-                  rows={2}
-                  value={formData[`option${opt}`]}
-                  onChange={e => setFormData({...formData, [`option${opt}`]: e.target.value})}
-                  required
-                />
-              </div>
-            ))}
-          </div>
-
-          <div className="form-group">
-            <label>Correct Answer</label>
-            <div style={{ display: 'flex', gap: '1.5rem' }}>
-              {['A', 'B', 'C', 'D'].map(opt => (
-                <label key={opt} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', color: 'var(--text-primary)' }}>
+              <div key={opt} style={{ 
+                background: 'rgba(0, 0, 0, 0.2)', 
+                border: formData.correctOption === opt ? '1px solid #22c55e' : '1px solid rgba(255, 255, 255, 0.1)', 
+                borderRadius: '0.5rem',
+                padding: '1rem',
+                display: 'flex',
+                gap: '1rem',
+                transition: 'border-color 0.2s'
+              }}>
+                <div style={{ paddingTop: '0.5rem' }}>
                   <input 
-                    type="radio" 
-                    name="correctOption" 
+                    type="radio"
+                    name="correctOption"
                     value={opt}
                     checked={formData.correctOption === opt}
                     onChange={e => setFormData({...formData, correctOption: e.target.value})}
-                    style={{ width: 'auto' }}
+                    style={{ 
+                      width: '1.25rem', 
+                      height: '1.25rem',
+                      cursor: 'pointer',
+                      accentColor: '#22c55e'
+                    }}
+                    title="Mark as correct answer"
                   />
-                  Option {opt}
-                </label>
-              ))}
-            </div>
+                </div>
+                <div style={{ flex: 1 }}>
+                  <div style={{ 
+                    fontSize: '0.75rem', 
+                    color: formData.correctOption === opt ? '#22c55e' : '#9ca3af', 
+                    fontWeight: '700', 
+                    marginBottom: '0.5rem' 
+                  }}>
+                    Option {opt} {formData.correctOption === opt && '(Correct Answer)'}
+                  </div>
+                  <textarea 
+                    rows={2}
+                    value={formData[`option${opt}`]}
+                    onChange={e => setFormData({...formData, [`option${opt}`]: e.target.value})}
+                    required
+                    placeholder={`Enter content for option ${opt}...`}
+                    style={{
+                      width: '100%',
+                      background: 'transparent',
+                      border: 'none',
+                      color: '#f3f4f6',
+                      fontSize: '0.9375rem',
+                      resize: 'none',
+                      outline: 'none',
+                      fontFamily: 'inherit'
+                    }}
+                  />
+                </div>
+              </div>
+            ))}
           </div>
+        </div>
 
+        {/* Section 4: Detailed Solution */}
+        <div style={{ 
+          background: 'rgba(255, 255, 255, 0.03)', 
+          border: '1px solid rgba(255, 255, 255, 0.1)', 
+          borderRadius: '0.75rem',
+          padding: '2rem',
+          marginBottom: '2rem'
+        }}>
+          <div style={{ 
+            fontSize: '0.875rem', 
+            fontWeight: '600', 
+            color: '#4b8aaf', 
+            textTransform: 'uppercase', 
+            letterSpacing: '0.05em',
+            marginBottom: '1.5rem',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.5rem'
+          }}>
+            💡 Detailed Solution
+          </div>
+          
           <div className="form-group">
-            <label>Solution / Explanation</label>
             <textarea 
               rows={4}
               value={formData.solutionText}
               onChange={e => setFormData({...formData, solutionText: e.target.value})}
-              placeholder="Explain the solution..."
+              placeholder="Explain the derivation and step-by-step logic here..."
+              style={{
+                width: '100%',
+                padding: '1rem',
+                background: 'rgba(0, 0, 0, 0.2)',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+                borderRadius: '0.5rem',
+                color: '#f3f4f6',
+                fontSize: '0.9375rem',
+                lineHeight: '1.6',
+                resize: 'vertical'
+              }}
             />
           </div>
+        </div>
 
-          <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '2rem' }}>
-            <button type="submit" className="btn btn-primary" style={{ minWidth: '150px' }}>
-              Save Question
-            </button>
-          </div>
-        </form>
-      </div>
+        {/* Form Actions */}
+        <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '1rem' }}>
+          <button 
+            type="button"
+            onClick={() => window.history.back()}
+            style={{ 
+              padding: '0.75rem 1.5rem',
+              background: 'transparent',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
+              borderRadius: '0.5rem',
+              color: '#9ca3af',
+              fontSize: '0.9375rem',
+              fontWeight: '600',
+              cursor: 'pointer'
+            }}
+          >
+            Cancel
+          </button>
+          <button 
+            type="submit" 
+            style={{ 
+              padding: '0.75rem 2rem',
+              background: '#4b8aaf',
+              border: 'none',
+              borderRadius: '0.5rem',
+              color: '#fff',
+              fontSize: '0.9375rem',
+              fontWeight: '700',
+              cursor: 'pointer',
+              boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)'
+            }}
+          >
+            Save Question
+          </button>
+        </div>
+      </form>
     </div>
   );
+
 }

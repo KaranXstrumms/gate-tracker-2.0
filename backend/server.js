@@ -46,6 +46,83 @@ app.get('/api/questions', async (req, res) => {
   }
 });
 
+
+// POST /api/questions/bulk - Bulk import questions (MUST be before /api/questions)
+app.post('/api/questions/bulk', async (req, res) => {
+  try {
+    const { questions } = req.body;
+
+    if (!Array.isArray(questions) || questions.length === 0) {
+      return res.status(400).json({ 
+        message: 'Invalid request: questions must be a non-empty array' 
+      });
+    }
+
+    const { questionSchema } = require('./validators/questionValidator');
+    
+    const results = {
+      total: questions.length,
+      inserted: 0,
+      failed: 0,
+      errors: []
+    };
+
+    // Validate and prepare questions
+    const validQuestions = [];
+    
+    for (let i = 0; i < questions.length; i++) {
+      const { error } = questionSchema.validate(questions[i]);
+      
+      if (error) {
+        results.failed++;
+        results.errors.push({
+          index: i,
+          question: questions[i].questionText?.substring(0, 50) || 'N/A',
+          reason: error.details[0].message
+        });
+      } else {
+        // Basic duplicate check: hash question text + options
+        const questionHash = `${questions[i].questionText}${questions[i].optionA}${questions[i].optionB}${questions[i].optionC}${questions[i].optionD}`;
+        
+        const existingQuestion = await Question.findOne({
+          questionText: questions[i].questionText,
+          optionA: questions[i].optionA
+        });
+
+        if (existingQuestion) {
+          results.failed++;
+          results.errors.push({
+            index: i,
+            question: questions[i].questionText.substring(0, 50),
+            reason: 'Duplicate question detected'
+          });
+        } else {
+          validQuestions.push(questions[i]);
+        }
+      }
+    }
+
+    // Bulk insert valid questions
+    if (validQuestions.length > 0) {
+      const insertedQuestions = await Question.insertMany(validQuestions, { 
+        ordered: false 
+      });
+      results.inserted = insertedQuestions.length;
+    }
+
+    res.status(200).json({
+      success: true,
+      ...results
+    });
+
+  } catch (error) {
+    res.status(500).json({ 
+      message: 'Bulk import failed', 
+      error: error.message 
+    });
+  }
+});
+
 // POST /api/questions - Add a new question
 app.post('/api/questions', async (req, res) => {
   try {

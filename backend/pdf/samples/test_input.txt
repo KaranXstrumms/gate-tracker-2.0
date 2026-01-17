@@ -1,0 +1,23 @@
+1. What is the Laplace transform of the unit step function u(t)?
+(A) 1/s
+(B) s
+(C) 1
+(D) 0
+
+2. Thevenin's theorem is applicable to which type of circuits?
+(A) Linear circuits only
+(B) Non-linear circuits only
+(C) Both linear and non-linear
+(D) Neither
+
+Q.3 How many flip-flops are required to construct a MOD-16 counter?
+(A) 2
+(B) 4
+(C) 8
+(D) 16
+
+Question 4 The Nyquist sampling theorem states that the sampling frequency must be:
+(A) Equal to the signal frequency
+(B) At least twice the highest frequency component
+(C) Less than the signal frequency
+(D) Independent of signal frequency
