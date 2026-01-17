@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import { storage } from '../services/storage';
+import API_BASE_URL from '../config/api';
+
 
 export default function Practice() {
   const [allQuestions, setAllQuestions] = useState([]);
@@ -57,7 +59,7 @@ export default function Practice() {
     const fetchQuestions = async () => {
       try {
         setLoading(true);
-        const response = await fetch('/api/questions');
+        const response = await fetch(`${API_BASE_URL}/api/questions`);
         
         if (!response.ok) {
            const text = await response.text();

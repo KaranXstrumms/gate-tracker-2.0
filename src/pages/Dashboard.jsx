@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import { storage } from '../services/storage';
+import API_BASE_URL from '../config/api';
+
 
 export default function Dashboard() {
   const [stats, setStats] = useState({
@@ -21,7 +23,7 @@ export default function Dashboard() {
       // Fetch questions from API
       let questions = [];
       try {
-        const response = await fetch('/api/questions');
+        const response = await fetch(`${API_BASE_URL}/api/questions`);
         if (response.ok) {
           const data = await response.json();
           questions = data.map(q => ({ ...q, id: q._id }));

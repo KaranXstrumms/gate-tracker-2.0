@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { storage } from '../../services/storage';
+import API_BASE_URL from '../../config/api';
+
 
 export default function AddQuestion() {
   const [formData, setFormData] = useState({
@@ -36,7 +38,7 @@ export default function AddQuestion() {
     }
 
     try {
-      const response = await fetch("/api/questions", {
+      const response = await fetch(`${API_BASE_URL}/api/questions`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

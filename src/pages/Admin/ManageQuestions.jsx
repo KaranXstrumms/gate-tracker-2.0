@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { storage } from '../../services/storage';
 import { Link } from 'react-router-dom';
+import API_BASE_URL from '../../config/api';
+
 
 export default function ManageQuestions() {
   const [allQuestions, setAllQuestions] = useState([]);
@@ -15,7 +17,7 @@ export default function ManageQuestions() {
   useEffect(() => {
     const fetchQuestions = async () => {
       try {
-        const response = await fetch('/api/questions');
+        const response = await fetch(`${API_BASE_URL}/api/questions`);
         if (!response.ok) throw new Error('Failed to fetch');
         const data = await response.json();
         const mappedQuestions = data.map(q => ({ ...q, id: q._id }));
@@ -46,7 +48,7 @@ export default function ManageQuestions() {
   const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to delete this question? This cannot be undone.')) {
       try {
-        const response = await fetch(`/api/questions/${id}`, { method: 'DELETE' });
+        const response = await fetch(`${API_BASE_URL}/api/questions/${id}`, { method: 'DELETE' });
         if (!response.ok) throw new Error('Delete failed');
         setAllQuestions(prev => prev.filter(q => q.id !== id));
       } catch (err) {
