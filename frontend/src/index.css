@@ -9,8 +9,8 @@
   --accent-gradient: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
   --border-color: rgba(148, 163, 184, 0.1);
   --glass-border: 1px solid rgba(255, 255, 255, 0.05);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
-    0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-lg:
+    0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
 
 * {
@@ -116,3 +116,507 @@ label {
 .form-group {
   margin-bottom: 1.5rem;
 }
+
+/* =========================================
+   PHASE R1: GLOBAL RESPONSIVE BASE
+   ========================================= */
+
+/* Global Breakpoints & Font Scaling */
+:root {
+  --mobile-width: 480px;
+  --tablet-width: 768px;
+  --laptop-width: 1024px;
+}
+
+html {
+  font-size: 16px; /* Base size */
+}
+
+@media (max-width: 1024px) {
+  html {
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 768px) {
+  html {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  html {
+    font-size: 14px; /* Stop shrinking below this to preserve readability */
+  }
+
+  /* Touch-friendly targets for mobile */
+  button,
+  .btn,
+  select,
+  input[type="checkbox"],
+  input[type="radio"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  input,
+  select,
+  textarea {
+    font-size: 16px !important; /* Prevent iOS zoom on focus */
+  }
+}
+
+/* Container Responsiveness */
+.container {
+  width: 100%;
+  padding-right: 1rem;
+  padding-left: 1rem;
+  margin-right: auto;
+  margin-left: auto;
+  overflow-x: hidden; /* Prevent horizontal scroll */
+}
+
+@media (max-width: 1024px) {
+  .container {
+    max-width: 960px;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    max-width: 720px;
+    padding: 0 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    max-width: 100%;
+    padding: 0 1rem;
+  }
+}
+
+/* Prevent horizontal overflow globally */
+body,
+html {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+img,
+video,
+canvas,
+svg {
+  max-width: 100%;
+  height: auto;
+}
+
+/* =========================================
+   PHASE R2: LAYOUT BACKBONE
+   ========================================= */
+
+/* Navbar Base Styles (Moved from inline) */
+.navbar {
+  border-bottom: 1px solid var(--border-color);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(15, 23, 42, 0.8);
+}
+
+.navbar-inner {
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo-text {
+  font-weight: 700;
+  font-size: 1.25rem;
+  color: var(--text-primary);
+}
+
+.logo-accent {
+  color: var(--accent-primary);
+}
+
+.nav-links {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.nav-item {
+  color: var(--text-secondary);
+  transition: color 0.2s;
+}
+
+.nav-item:hover {
+  color: var(--text-primary);
+}
+
+.nav-group-right {
+  display: flex;
+  gap: 0.5rem;
+  border-left: 1px solid var(--border-color);
+  padding-left: 1rem;
+}
+
+.nav-link-add {
+  color: var(--accent-primary);
+}
+
+.nav-link-manage {
+  color: #ef4444; /* Red-500 */
+}
+
+.mobile-menu-btn {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--text-primary);
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0.5rem;
+}
+
+/* Mobile Navbar Styles */
+@media (max-width: 768px) {
+  .mobile-menu-btn {
+    display: block;
+  }
+
+  .nav-links {
+    position: absolute;
+    top: 64px;
+    left: 0;
+    right: 0;
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border-color);
+    flex-direction: column;
+    padding: 1rem;
+    gap: 1rem;
+    transform: translateY(-150%);
+    transition: transform 0.3s ease-in-out;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .nav-links.active {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  }
+
+  .nav-group-right {
+    border-left: none;
+    padding-left: 0;
+    width: 100%;
+    justify-content: center;
+    border-top: 1px solid var(--border-color);
+    padding-top: 1rem;
+  }
+
+  .nav-links a {
+    width: 100%;
+    text-align: center;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+  }
+  
+  .nav-links a:hover {
+    background: rgba(255, 255, 255, 0.05);
+  }
+}
+
+
+/* =========================================
+   PHASE R3: PRACTICE PAGE RESPONSIVENESS
+   ========================================= */
+
+/* Main Layout Wrapper */
+.practice-wrapper {
+  display: flex;
+  height: calc(100vh - 64px); /* Adjust for navbar */
+  overflow: hidden;
+  background: var(--bg-primary);
+}
+
+/* Left Content Area (Header + Question + Footer) */
+.practice-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Header */
+.practice-header {
+  padding: 1rem 2rem;
+  border-bottom: 1px solid var(--border-color);
+  background: rgba(255, 255, 255, 0.02);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.practice-header-left {
+  /* Default Desktop */
+}
+
+.practice-header-right {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+/* Question Content Container */
+.question-container {
+  flex: 1;
+  overflow-y: auto;
+  padding: 2rem;
+  max-width: 900px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.question-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border-color);
+  border-radius: 0.75rem;
+  padding: 2rem;
+  margin-bottom: 2rem;
+}
+
+/* Footer Navigation */
+.practice-footer {
+  padding: 1rem 2rem;
+  border-top: 1px solid var(--border-color);
+  background: rgba(255, 255, 255, 0.02);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Right Sidebar (Palette) */
+.practice-sidebar {
+  width: 280px;
+  border-left: 1px solid var(--border-color);
+  background: rgba(255, 255, 255, 0.02);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.palette-grid {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1.5rem;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0.75rem;
+  align-content: start;
+}
+
+/* Mobile & Tablet Styles */
+@media (max-width: 768px) {
+  .practice-wrapper {
+    flex-direction: column;
+    height: auto; /* Use auto height for scrolling on mobile */
+    min-height: calc(100vh - 64px);
+    overflow: visible;
+  }
+
+  .practice-main {
+    flex: none;
+    height: auto;
+    overflow: visible;
+  }
+
+  .practice-header {
+    padding: 1rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  
+  .practice-header-right {
+    width: 100%;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .question-container {
+    padding: 1rem;
+    overflow: visible; /* Let page scroll */
+  }
+
+  .question-card {
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .practice-footer {
+    padding: 1rem;
+    flex-direction: column;
+    gap: 1rem;
+    position: sticky;
+    bottom: 0;
+    background: var(--bg-secondary);
+    z-index: 20;
+    border-top: 1px solid var(--accent-primary); /* Visual separator */
+  }
+
+  .practice-footer .nav-group {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  /* Sidebar moves to bottom or becomes hidden/drawer */
+  /* For Phase R3, let's keep it visible at bottom but clean */
+  .practice-sidebar {
+    width: 100%;
+    height: auto;
+    border-left: none;
+    border-top: 1px solid var(--border-color);
+    max-height: 300px; /* Limit height */
+  }
+
+  .palette-grid {
+    padding: 1rem;
+    /* Increase columns for horizontal space */
+    grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
+  }
+}
+
+
+/* =========================================
+   PHASE R4: DASHBOARD & ADMIN RESPONSIVENESS
+   ========================================= */
+
+/* --- DASHBOARD --- */
+.dashboard-container {
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+.dashboard-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+}
+.dashboard-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.75rem;
+  padding: 2rem;
+  position: relative;
+  overflow: hidden;
+}
+
+/* --- ADMIN - ADD QUESTION --- */
+.add-question-container {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.form-section {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.75rem;
+  padding: 2rem;
+  margin-bottom: 2rem;
+}
+.options-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+/* --- ADMIN - MANAGE QUESTIONS --- */
+.manage-container {
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+.manage-filters {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.75rem;
+  padding: 1rem;
+  margin-bottom: 2rem;
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.questions-table-container {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.75rem;
+  overflow: hidden;
+}
+.questions-table-header {
+  display: grid;
+  grid-template-columns: 80px 180px 1fr 100px 100px;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(0, 0, 0, 0.2);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #9ca3af;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.questions-table-row {
+  display: grid;
+  grid-template-columns: 80px 180px 1fr 100px 100px;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  align-items: center;
+  transition: background 0.2s;
+  font-size: 0.9375rem;
+}
+.questions-table-row:hover {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+/* --- RESPONSIVE OVERRIDES (R4) --- */
+@media (max-width: 768px) {
+  /* Dashboard */
+  .dashboard-container { padding: 1rem; }
+  .dashboard-metrics-grid { gap: 1rem; margin-bottom: 2rem; }
+  .dashboard-card { padding: 1.5rem; }
+
+  /* Add Question */
+  .add-question-container { padding: 1rem; }
+  .form-section { padding: 1.5rem; }
+  .options-grid { grid-template-columns: 1fr; }
+
+  /* Manage Questions */
+  .manage-container { padding: 1rem; }
+  .manage-filters { flex-direction: column; align-items: stretch; }
+  .questions-table-header { display: none; }
+  .questions-table-row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    align-items: flex-start;
+    padding: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  /* Reset widths for stacked layout */
+  .questions-table-row > div {
+    padding-right: 0 !important;
+    width: 100%;
+  }
+}
+

@@ -76,7 +76,7 @@ export default function Dashboard() {
   }, []);
 
   return (
-    <div style={{ padding: '2rem', maxWidth: '1400px', margin: '0 auto' }}>
+    <div className="dashboard-container">
       {/* Welcome Header */}
       <div style={{ marginBottom: '3rem' }}>
         <h1 style={{ 
@@ -113,21 +113,9 @@ export default function Dashboard() {
       ) : (
         <>
           {/* Key Metrics Cards */}
-          <div style={{ 
-            display: 'grid', 
-            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', 
-            gap: '1.5rem', 
-            marginBottom: '3rem' 
-          }}>
+          <div className="dashboard-metrics-grid">
             {/* Overall Accuracy */}
-            <div style={{ 
-              background: 'rgba(255, 255, 255, 0.03)', 
-              border: '1px solid rgba(255, 255, 255, 0.1)',
-              borderRadius: '0.75rem',
-              padding: '2rem',
-              position: 'relative',
-              overflow: 'hidden'
-            }}>
+            <div className="dashboard-card">
               <div style={{ 
                 position: 'absolute',
                 top: '1.5rem',
@@ -165,14 +153,7 @@ export default function Dashboard() {
             </div>
 
             {/* Questions Solved */}
-            <div style={{ 
-              background: 'rgba(255, 255, 255, 0.03)', 
-              border: '1px solid rgba(255, 255, 255, 0.1)',
-              borderRadius: '0.75rem',
-              padding: '2rem',
-              position: 'relative',
-              overflow: 'hidden'
-            }}>
+            <div className="dashboard-card">
               <div style={{ 
                 position: 'absolute',
                 top: '1.5rem',
@@ -210,14 +191,7 @@ export default function Dashboard() {
             </div>
 
             {/* Correct / Incorrect */}
-            <div style={{ 
-              background: 'rgba(255, 255, 255, 0.03)', 
-              border: '1px solid rgba(255, 255, 255, 0.1)',
-              borderRadius: '0.75rem',
-              padding: '2rem',
-              position: 'relative',
-              overflow: 'hidden'
-            }}>
+            <div className="dashboard-card">
               <div style={{ 
                 position: 'absolute',
                 top: '1.5rem',

@@ -472,19 +472,12 @@ export default function Practice() {
   };
 
   return (
-    <div style={{ display: 'flex', height: '100vh', overflow: 'hidden' }}>
+    <div className="practice-wrapper">
       {/* Main Content Area */}
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+      <div className="practice-main">
         {/* Header */}
-        <div style={{ 
-          padding: '1rem 2rem', 
-          borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
-          background: 'rgba(255, 255, 255, 0.02)',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center'
-        }}>
-          <div>
+        <div className="practice-header">
+          <div className="practice-header-left">
             <div style={{ fontSize: '0.875rem', color: '#9ca3af', marginBottom: '0.25rem' }}>
               {getSubjectName(selectedSubject)} › {getTopicName(selectedSubject, selectedTopic)}
             </div>
@@ -492,7 +485,7 @@ export default function Practice() {
               Question {currentQuestionIndex + 1} of {filteredQuestions.length}
             </div>
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
+          <div className="practice-header-right">
             {/* Timer */}
             <div style={{ 
               display: 'flex', 
@@ -537,14 +530,8 @@ export default function Practice() {
         </div>
 
         {/* Question Content */}
-        <div style={{ flex: 1, overflow: 'auto', padding: '2rem', maxWidth: '900px', margin: '0 auto', width: '100%' }}>
-          <div style={{ 
-            background: 'rgba(255, 255, 255, 0.03)', 
-            border: '1px solid rgba(255, 255, 255, 0.1)', 
-            borderRadius: '0.75rem', 
-            padding: '2rem',
-            marginBottom: '2rem'
-          }}>
+        <div className="question-container">
+          <div className="question-card">
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1.5rem', paddingBottom: '1rem', borderBottom: '1px solid rgba(255, 255, 255, 0.1)' }}>
               <div>
                 <span style={{ 
@@ -688,15 +675,8 @@ export default function Practice() {
         </div>
 
         {/* Footer Navigation */}
-        <div style={{ 
-          padding: '1rem 2rem', 
-          borderTop: '1px solid rgba(255, 255, 255, 0.1)',
-          background: 'rgba(255, 255, 255, 0.02)',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center'
-        }}>
-          <div style={{ display: 'flex', gap: '0.75rem' }}>
+        <div className="practice-footer">
+          <div className="nav-group">
             <button
               onClick={handlePrevious}
               disabled={currentQuestionIndex === 0}
@@ -730,7 +710,7 @@ export default function Practice() {
             </button>
           </div>
 
-          <div style={{ display: 'flex', gap: '0.75rem' }}>
+          <div className="nav-group" style={{ justifyContent: 'flex-end', gap: '0.75rem' }}>
             {!isSubmitted && (
               <button
                 onClick={handleSubmit}
@@ -770,15 +750,7 @@ export default function Practice() {
         </div>
       </div>
 
-      {/* Right Sidebar - Question Palette */}
-      <div style={{ 
-        width: '280px', 
-        borderLeft: '1px solid rgba(255, 255, 255, 0.1)', 
-        background: 'rgba(255, 255, 255, 0.02)',
-        display: 'flex',
-        flexDirection: 'column',
-        overflow: 'hidden'
-      }}>
+      <div className="practice-sidebar">
         <div style={{ padding: '1.5rem', borderBottom: '1px solid rgba(255, 255, 255, 0.1)' }}>
           <h3 style={{ fontSize: '0.875rem', fontWeight: '700', color: '#f3f4f6', marginBottom: '1rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
             Question Palette
@@ -803,8 +775,7 @@ export default function Practice() {
           </div>
         </div>
 
-        <div style={{ flex: 1, overflow: 'auto', padding: '1.5rem' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '0.5rem' }}>
+        <div className="palette-grid">
             {filteredQuestions.map((q, index) => {
               const status = getQuestionStatus(index);
               let bgColor = 'rgba(255, 255, 255, 0.05)';
@@ -847,7 +818,6 @@ export default function Practice() {
                 </button>
               );
             })}
-          </div>
         </div>
       </div>
     </div>

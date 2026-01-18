@@ -1,4 +1,6 @@
+import { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { Menu, X } from 'lucide-react';
 import { AuthProvider } from './context/AuthContext';
 import AddQuestion from './pages/Admin/AddQuestion';
 import ManageQuestions from './pages/Admin/ManageQuestions';
@@ -307,21 +309,32 @@ function Home() {
 }
 
 function App() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
   return (
     <AuthProvider>
       <Router>
         <div style={{ minHeight: '100vh', paddingBottom: '2rem' }}>
-          <nav style={{ borderBottom: '1px solid var(--border-color)', backdropFilter: 'blur(10px)', position: 'sticky', top: 0, zIndex: 10 }}>
-            <div className="container" style={{ height: '64px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-              <Link to="/" style={{ fontWeight: '700', fontSize: '1.25rem', color: 'var(--text-primary)' }}>
-                GATE<span style={{ color: 'var(--accent-primary)' }}>.PRO</span>
+          <nav className="navbar">
+            <div className="container navbar-inner">
+              <Link to="/" className="logo-text" onClick={() => setIsMenuOpen(false)}>
+                GATE<span className="logo-accent">.PRO</span>
               </Link>
-              <div style={{ display: 'flex', gap: '1rem' }}>
-                <Link to="/practice" style={{ color: 'var(--text-secondary)' }}>Practice</Link>
-                <Link to="/dashboard" style={{ color: 'var(--text-secondary)' }}>Dashboard</Link>
-                <div style={{ display: 'flex', gap: '0.5rem', borderLeft: '1px solid var(--border-color)', paddingLeft: '1rem' }}>
-                  <Link to="/admin/add-question" style={{ color: 'var(--accent-primary)' }}>Add</Link>
-                  <Link to="/admin/manage-questions" style={{ color: '#ef4444' }}>Manage</Link>
+              
+              <button 
+                className="mobile-menu-btn"
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                aria-label="Toggle menu"
+              >
+                {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+              </button>
+
+              <div className={`nav-links ${isMenuOpen ? 'active' : ''}`}>
+                <Link to="/practice" className="nav-item" onClick={() => setIsMenuOpen(false)}>Practice</Link>
+                <Link to="/dashboard" className="nav-item" onClick={() => setIsMenuOpen(false)}>Dashboard</Link>
+                <div className="nav-group-right">
+                  <Link to="/admin/add-question" className="nav-link-add" onClick={() => setIsMenuOpen(false)}>Add</Link>
+                  <Link to="/admin/manage-questions" className="nav-link-manage" onClick={() => setIsMenuOpen(false)}>Manage</Link>
                 </div>
               </div>
             </div>

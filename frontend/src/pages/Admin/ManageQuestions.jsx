@@ -70,7 +70,7 @@ export default function ManageQuestions() {
   });
 
   return (
-    <div style={{ padding: '2rem', maxWidth: '1400px', margin: '0 auto' }}>
+    <div className="manage-container">
       {/* Header */}
       <div style={{ 
         display: 'flex', 
@@ -111,17 +111,7 @@ export default function ManageQuestions() {
       </div>
 
       {/* Filters Bar */}
-      <div style={{ 
-        background: 'rgba(255, 255, 255, 0.03)', 
-        border: '1px solid rgba(255, 255, 255, 0.1)', 
-        borderRadius: '0.75rem',
-        padding: '1rem',
-        marginBottom: '2rem',
-        display: 'flex',
-        gap: '1rem',
-        flexWrap: 'wrap',
-        alignItems: 'center'
-      }}>
+      <div className="manage-filters">
         {/* Search */}
         <div style={{ flex: 2, minWidth: '250px', position: 'relative' }}>
           <span style={{ 
@@ -229,25 +219,9 @@ export default function ManageQuestions() {
       </div>
 
       {/* Questions List */}
-      <div style={{ 
-        background: 'rgba(255, 255, 255, 0.03)', 
-        border: '1px solid rgba(255, 255, 255, 0.1)', 
-        borderRadius: '0.75rem',
-        overflow: 'hidden'
-      }}>
+      <div className="questions-table-container">
         {/* Table Header */}
-        <div style={{ 
-          display: 'grid', 
-          gridTemplateColumns: '80px 180px 1fr 100px 100px', 
-          padding: '1rem 1.5rem',
-          borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
-          background: 'rgba(0, 0, 0, 0.2)',
-          fontSize: '0.75rem',
-          fontWeight: '700',
-          color: '#9ca3af',
-          textTransform: 'uppercase',
-          letterSpacing: '0.05em'
-        }}>
+        <div className="questions-table-header">
           <div>ID</div>
           <div>Subject</div>
           <div>Question Preview</div>
@@ -267,18 +241,7 @@ export default function ManageQuestions() {
               const topicName = getTopicName(normalize(q.subjectId), normalize(q.topicId));
               
               return (
-                <div key={q.id} style={{ 
-                  display: 'grid', 
-                  gridTemplateColumns: '80px 180px 1fr 100px 100px', 
-                  padding: '1.25rem 1.5rem',
-                  borderBottom: '1px solid rgba(255, 255, 255, 0.05)',
-                  alignItems: 'center',
-                  transition: 'background 0.2s',
-                  fontSize: '0.9375rem'
-                }}
-                onMouseOver={e => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.02)'}
-                onMouseOut={e => e.currentTarget.style.background = 'transparent'}
-                >
+                <div key={q.id} className="questions-table-row">
                   <div style={{ color: '#6b7280', fontFamily: 'monospace', fontSize: '0.8125rem' }}>
                     #{q.id.slice(-4)}
                   </div>

@@ -70,7 +70,7 @@ export default function AddQuestion() {
   };
 
   return (
-    <div style={{ padding: '2rem', maxWidth: '1200px', margin: '0 auto' }}>
+    <div className="add-question-container">
       {/* Header */}
       <div style={{ marginBottom: '2rem' }}>
         <div style={{ fontSize: '0.875rem', color: '#9ca3af', marginBottom: '0.5rem' }}>
@@ -104,13 +104,7 @@ export default function AddQuestion() {
 
       <form onSubmit={handleSubmit}>
         {/* Section 1: Question Metadata */}
-        <div style={{ 
-          background: 'rgba(255, 255, 255, 0.03)', 
-          border: '1px solid rgba(255, 255, 255, 0.1)', 
-          borderRadius: '0.75rem',
-          padding: '2rem',
-          marginBottom: '2rem'
-        }}>
+        <div className="form-section">
           <div style={{ 
             fontSize: '0.875rem', 
             fontWeight: '600', 
@@ -228,13 +222,7 @@ export default function AddQuestion() {
         </div>
 
         {/* Section 2: Problem Statement */}
-        <div style={{ 
-          background: 'rgba(255, 255, 255, 0.03)', 
-          border: '1px solid rgba(255, 255, 255, 0.1)', 
-          borderRadius: '0.75rem',
-          padding: '2rem',
-          marginBottom: '2rem'
-        }}>
+        <div className="form-section">
           <div style={{ 
             fontSize: '0.875rem', 
             fontWeight: '600', 
@@ -276,13 +264,7 @@ export default function AddQuestion() {
         </div>
 
         {/* Section 3: Multiple Choice Options */}
-        <div style={{ 
-          background: 'rgba(255, 255, 255, 0.03)', 
-          border: '1px solid rgba(255, 255, 255, 0.1)', 
-          borderRadius: '0.75rem',
-          padding: '2rem',
-          marginBottom: '2rem'
-        }}>
+        <div className="form-section">
           <div style={{ 
             display: 'flex',
             justifyContent: 'space-between',
@@ -313,7 +295,7 @@ export default function AddQuestion() {
             </div>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
+          <div className="options-grid">
             {['A', 'B', 'C', 'D'].map(opt => (
               <div key={opt} style={{ 
                 background: 'rgba(0, 0, 0, 0.2)', 
@@ -373,13 +355,7 @@ export default function AddQuestion() {
         </div>
 
         {/* Section 4: Detailed Solution */}
-        <div style={{ 
-          background: 'rgba(255, 255, 255, 0.03)', 
-          border: '1px solid rgba(255, 255, 255, 0.1)', 
-          borderRadius: '0.75rem',
-          padding: '2rem',
-          marginBottom: '2rem'
-        }}>
+        <div className="form-section">
           <div style={{ 
             fontSize: '0.875rem', 
             fontWeight: '600', 
