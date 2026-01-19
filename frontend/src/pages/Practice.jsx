@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { storage } from '../services/storage';
-import API_BASE_URL from '../config/api';
+import { API_BASE_URL } from '../config/api';
 
 
 export default function Practice() {

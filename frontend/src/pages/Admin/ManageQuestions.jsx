@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { storage } from '../../services/storage';
 import { Link } from 'react-router-dom';
-import API_BASE_URL from '../../config/api';
+import { API_BASE_URL } from '../../config/api';
 
 
 export default function ManageQuestions() {

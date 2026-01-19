@@ -23,15 +23,6 @@ Since your backend requires a persistent running process (Node.js/Express) and M
 
 ---
 
-## 2. Frontend Configuration (Vercel)
-
-Now that we have restructured the project for a monorepo, you must update Vercel settings.
-
-1.  Go to your **Vercel Dashboard** -> **Settings**.
-2.  **General**:
-    - **Root Directory**: `frontend` (Edit this field)
-    - **Framework Preset**: Vite
-    - **Build Command**: `npm run build` (Default)
     - **Output Directory**: `dist` (Default)
     - **Install Command**: `npm install` (Default)
 

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link, Navigate } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 import { AuthProvider } from './context/AuthContext';
 import AddQuestion from './pages/Admin/AddQuestion';
@@ -274,7 +274,7 @@ function Home() {
         <p style={{
           fontSize: '1rem',
           color: '#9ca3af',
-          marginBottom: '1rem',
+          marginBottom: '1.5rem',
           fontWeight: '500'
         }}>
           Designed & Developed completely by{' '}
@@ -290,23 +290,49 @@ function Home() {
           </span>
         </p>
 
-        <Link 
-          to="/admin/manage-questions" 
-          style={{ 
-            color: '#4b5563',
-            fontSize: '0.8125rem',
-            textDecoration: 'none',
-            transition: 'color 0.2s'
-          }}
-          onMouseOver={e => e.currentTarget.style.color = '#ef4444'}
-          onMouseOut={e => e.currentTarget.style.color = '#4b5563'}
-        >
-          Admin: Manage Questions
-        </Link>
+        <div style={{ color: '#4b5563', fontSize: '0.8125rem' }}>
+          <div>
+            © 2026 Karan Kumar. All rights reserved.
+          </div>
+          <div style={{ marginTop: '0.5rem' }}>
+            <button 
+              onClick={() => {
+                const pwd = prompt("Enter Admin Password:");
+                if (pwd === import.meta.env.VITE_ADMIN_PASSWORD) {
+                  sessionStorage.setItem('isAdmin', 'true');
+                  window.location.href = '/admin/manage-questions';
+                } else if (pwd) {
+                  alert("Incorrect password");
+                }
+              }}
+              style={{ 
+                background: 'none',
+                border: 'none',
+                color: 'inherit',
+                textDecoration: 'none',
+                opacity: 0.5,
+                transition: 'opacity 0.2s',
+                cursor: 'pointer',
+                fontFamily: 'inherit',
+                fontSize: 'inherit',
+                padding: 0
+              }}
+              onMouseOver={e => e.currentTarget.style.opacity = 1}
+              onMouseOut={e => e.currentTarget.style.opacity = 0.5}
+            >
+              Admin
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );
 }
+
+const ProtectedRoute = ({ children }) => {
+  const isAdmin = sessionStorage.getItem('isAdmin') === 'true';
+  return isAdmin ? children : <Navigate to="/" replace />;
+};
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -332,10 +358,12 @@ function App() {
               <div className={`nav-links ${isMenuOpen ? 'active' : ''}`}>
                 <Link to="/practice" className="nav-item" onClick={() => setIsMenuOpen(false)}>Practice</Link>
                 <Link to="/dashboard" className="nav-item" onClick={() => setIsMenuOpen(false)}>Dashboard</Link>
-                <div className="nav-group-right">
-                  <Link to="/admin/add-question" className="nav-link-add" onClick={() => setIsMenuOpen(false)}>Add</Link>
-                  <Link to="/admin/manage-questions" className="nav-link-manage" onClick={() => setIsMenuOpen(false)}>Manage</Link>
-                </div>
+                {sessionStorage.getItem('isAdmin') === 'true' && (
+                  <div className="nav-group-right">
+                    <Link to="/admin/add-question" className="nav-link-add" onClick={() => setIsMenuOpen(false)}>Add</Link>
+                    <Link to="/admin/manage-questions" className="nav-link-manage" onClick={() => setIsMenuOpen(false)}>Manage</Link>
+                  </div>
+                )}
               </div>
             </div>
           </nav>
@@ -344,8 +372,22 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/practice" element={<Practice />} />
             <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/admin/add-question" element={<AddQuestion />} />
-            <Route path="/admin/manage-questions" element={<ManageQuestions />} />
+            <Route 
+              path="/admin/add-question" 
+              element={
+                <ProtectedRoute>
+                  <AddQuestion />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/admin/manage-questions" 
+              element={
+                <ProtectedRoute>
+                  <ManageQuestions />
+                </ProtectedRoute>
+              } 
+            />
           </Routes>
         </div>
       </Router>

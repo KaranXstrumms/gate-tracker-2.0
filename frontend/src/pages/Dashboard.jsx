@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { storage } from '../services/storage';
-import API_BASE_URL from '../config/api';
+import { API_BASE_URL } from '../config/api';
 
 
 export default function Dashboard() {
@@ -14,7 +14,7 @@ export default function Dashboard() {
 
   // v1.0: Questions are sourced from backend API, not localStorage
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchQuestions = async () => {
       const attempts = storage.getAttempts();
       const subjects = storage.getSubjects();
 
@@ -72,7 +72,7 @@ export default function Dashboard() {
       setStats({ total, correct, incorrect, accuracy, bySubject });
     };
 
-    fetchData();
+    fetchQuestions();
   }, []);
 
   return (
