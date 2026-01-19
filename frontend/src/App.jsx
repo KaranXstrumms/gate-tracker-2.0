@@ -49,7 +49,7 @@ const AdminModal = ({ isOpen, onClose }) => {
         animation: 'scaleIn 0.3s ease-out'
       }} onClick={e => e.stopPropagation()}>
         <h3 style={{ fontSize: '1.25rem', fontWeight: '700', color: '#f8fafc', marginBottom: '1.5rem' }}>
-          trictly for admin(not for users)
+          Admin Only (not for users)
         </h3>
         <form onSubmit={handleSubmit}>
           <div style={{ marginBottom: '1.5rem', position: 'relative' }}>
