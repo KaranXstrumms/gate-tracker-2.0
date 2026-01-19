@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, Navigate } from 'react-router-dom';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Eye, EyeOff } from 'lucide-react';
 import { AuthProvider } from './context/AuthContext';
 
 const AdminModal = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
 
   const handleSubmit = (e) => {
@@ -48,12 +49,12 @@ const AdminModal = ({ isOpen, onClose }) => {
         animation: 'scaleIn 0.3s ease-out'
       }} onClick={e => e.stopPropagation()}>
         <h3 style={{ fontSize: '1.25rem', fontWeight: '700', color: '#f8fafc', marginBottom: '1.5rem' }}>
-          Admin Access
+          Strictly for admin(not for users)
         </h3>
         <form onSubmit={handleSubmit}>
-          <div style={{ marginBottom: '1.5rem' }}>
+          <div style={{ marginBottom: '1.5rem', position: 'relative' }}>
             <input
-              type="password"
+              type={showPassword ? 'text' : 'password'}
               placeholder="Enter Admin Password"
               value={password}
               onChange={e => { setPassword(e.target.value); setError(''); }}
@@ -61,6 +62,7 @@ const AdminModal = ({ isOpen, onClose }) => {
               style={{
                 width: '100%',
                 padding: '0.75rem',
+                paddingRight: '2.5rem',
                 background: '#0f172a',
                 border: error ? '1px solid #ef4444' : '1px solid rgba(148, 163, 184, 0.1)',
                 borderRadius: '0.5rem',
@@ -69,6 +71,26 @@ const AdminModal = ({ isOpen, onClose }) => {
                 outline: 'none'
               }}
             />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              style={{
+                position: 'absolute',
+                right: '0.75rem',
+                top: '50%',
+                transform: 'translateY(-50%)',
+                background: 'none',
+                border: 'none',
+                color: '#94a3b8',
+                cursor: 'pointer',
+                padding: '0.25rem',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}
+            >
+              {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+            </button>
             {error && (
               <div style={{ color: '#ef4444', fontSize: '0.875rem', marginTop: '0.5rem', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
                 ⚠️ {error}
