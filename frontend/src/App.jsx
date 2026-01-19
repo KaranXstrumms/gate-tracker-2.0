@@ -2,13 +2,128 @@ import { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, Navigate } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 import { AuthProvider } from './context/AuthContext';
+
+const AdminModal = ({ isOpen, onClose }) => {
+  if (!isOpen) return null;
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (password === import.meta.env.VITE_ADMIN_PASSWORD) {
+      sessionStorage.setItem('isAdmin', 'true');
+      window.location.href = '/admin/manage-questions';
+    } else {
+      setError('Incorrect password');
+      setPassword('');
+    }
+  };
+
+  return (
+    <div style={{
+      position: 'fixed',
+      top: 0, left: 0, right: 0, bottom: 0,
+      background: 'rgba(15, 23, 42, 0.8)',
+      backdropFilter: 'blur(4px)',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      zIndex: 1000,
+      animation: 'fadeIn 0.2s ease-out'
+    }} onClick={onClose}>
+      <style>
+        {`
+          @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+          @keyframes scaleIn { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        `}
+      </style>
+      <div style={{
+        background: '#1e293b',
+        padding: '2rem',
+        borderRadius: '1rem',
+        width: '90%',
+        maxWidth: '360px',
+        border: '1px solid rgba(255, 255, 255, 0.1)',
+        boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
+        animation: 'scaleIn 0.3s ease-out'
+      }} onClick={e => e.stopPropagation()}>
+        <h3 style={{ fontSize: '1.25rem', fontWeight: '700', color: '#f8fafc', marginBottom: '1.5rem' }}>
+          Admin Access
+        </h3>
+        <form onSubmit={handleSubmit}>
+          <div style={{ marginBottom: '1.5rem' }}>
+            <input
+              type="password"
+              placeholder="Enter Admin Password"
+              value={password}
+              onChange={e => { setPassword(e.target.value); setError(''); }}
+              autoFocus
+              style={{
+                width: '100%',
+                padding: '0.75rem',
+                background: '#0f172a',
+                border: error ? '1px solid #ef4444' : '1px solid rgba(148, 163, 184, 0.1)',
+                borderRadius: '0.5rem',
+                color: '#f8fafc',
+                fontSize: '1rem',
+                outline: 'none'
+              }}
+            />
+            {error && (
+              <div style={{ color: '#ef4444', fontSize: '0.875rem', marginTop: '0.5rem', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                ⚠️ {error}
+              </div>
+            )}
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem' }}>
+            <button 
+              type="button" 
+              onClick={onClose} 
+              style={{
+                background: 'transparent',
+                border: 'none',
+                color: '#94a3b8',
+                cursor: 'pointer',
+                fontWeight: '600',
+                fontSize: '0.9375rem',
+                padding: '0.5rem 1rem'
+              }}
+            >
+              Cancel
+            </button>
+            <button 
+              type="submit" 
+              style={{
+                background: '#3b82f6',
+                color: 'white',
+                border: 'none',
+                padding: '0.5rem 1.5rem',
+                borderRadius: '0.5rem',
+                fontWeight: '600',
+                cursor: 'pointer',
+                fontSize: '0.9375rem',
+                boxShadow: '0 4px 6px -1px rgba(59, 130, 246, 0.5)'
+              }}
+            >
+              Continue
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+};
 import AddQuestion from './pages/Admin/AddQuestion';
 import ManageQuestions from './pages/Admin/ManageQuestions';
 import Practice from './pages/Practice';
 import Dashboard from './pages/Dashboard';
 
 function Home() {
+  const [showAdminModal, setShowAdminModal] = useState(false);
+
   return (
+    <>
+    <AdminModal isOpen={showAdminModal} onClose={() => setShowAdminModal(false)} />
     <div style={{ 
       minHeight: 'calc(100vh - 64px)',
       display: 'flex',
@@ -296,15 +411,7 @@ function Home() {
           </div>
           <div style={{ marginTop: '0.5rem' }}>
             <button 
-              onClick={() => {
-                const pwd = prompt("Enter Admin Password:");
-                if (pwd === import.meta.env.VITE_ADMIN_PASSWORD) {
-                  sessionStorage.setItem('isAdmin', 'true');
-                  window.location.href = '/admin/manage-questions';
-                } else if (pwd) {
-                  alert("Incorrect password");
-                }
-              }}
+              onClick={() => setShowAdminModal(true)}
               style={{ 
                 background: 'none',
                 border: 'none',
@@ -326,6 +433,7 @@ function Home() {
         </div>
       </div>
     </div>
+    </>
   );
 }
 
